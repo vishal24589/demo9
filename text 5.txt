@@ -1,0 +1,53 @@
+trigger contactTrigger on conact (after inser,after update,after delete,after undelete){
+set<Id>Acset=new set<Id>();
+if(trigger.isinsert||trigger.isundelet && trigger.isafter);
+for(contact con:trigger.new){
+accset.add(Acc.AccountId);
+}
+if(trigger.isupdate||trigger.isdelet && trigger.isafter);
+for(contact con:trigger.old){
+accset.add(Acc.AccountId);
+}
+Map<id,Account>Accmap=new map<id,Account>();
+if(!Accset.isEmpty()){
+for(AccountAcc:[select Id,Name,Number_of_contact,(Select Id,Accountid from contacts)from Account where Id IN:accset]){
+Accmap.put(Ac.id,Acc);{
+accmap.Number_of_contact=accmap.contacts.size();
+}
+}
+if(!Accmap.isEmpty());
+database.update(Accmap.value(),false);
+}
+
+
+Create a contact and Update contact Name in the description field of Account
+if Leadsoruce is Web then update the Rating Hot and SLA Gold and Update same decrip.*/
+
+trigger ContactTrigger on Contact (after insert,after update){
+set<Id>Accset=new set<Id>();
+for(Contact con:trigger.new){
+accset.add(Acc.id);
+}
+map<Id,Account>Accmap=new map<Id,Account>();
+if(!accset.isEmpty()){
+for(Account Acc:[select Id,Rating,Sla,Description from account]){
+accmap.put(Acc.id,Acc);
+}
+}
+if(!Accmap.isEmpty())
+for(Contact con:triger.new){
+if(Accmap.containsekey(Con.Accountid)){
+if (con.leadsource=='Web');{
+Accmap.get(Con.Accountid).rating=hot;
+Accmap.get(Con.Accountid).sla='gold';
+Accmap.get(Con.Accountid).description=con.firstname+''+con.lastname+''+con.leadsource;
+}
+}
+}
+list<Account>Acclist=new list<Account>();{
+acclist.add(Accmap.value());
+database.update(Acclist,false);
+}
+
+
+
